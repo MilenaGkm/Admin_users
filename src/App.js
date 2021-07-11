@@ -1,12 +1,10 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react"
 
 function App() {
-  return (
-    <div className="App">
-      <h1>Admin Users App</h1>
-    </div>
-  );
+    return (<div>
+        <h2>Admin user app</h2>
+        <h3>Date : {new Date().toDateString()}</h3>
+    </div>)
 }
 
-export default App;
+export default App
