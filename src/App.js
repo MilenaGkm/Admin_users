@@ -1,14 +1,18 @@
-import React from "react"
+import React, { Fragment } from "react"
 import Users from './containers/Users/Users'
+import Header from "./containers/Header/Header";
+import Modals from "./containers/Modals/Modals";
+
 import './App.css';
 
 function App() {
+
     return (
-        <div>
-            <h2>Admin user app</h2>
-            <h3>Date : {new Date().toDateString()}</h3>
+        <Fragment>
+            <Header />
             <Users />
-        </div>
+            <Modals />            
+        </Fragment>
     )
 }
 
