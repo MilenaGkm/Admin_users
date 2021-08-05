@@ -7,10 +7,9 @@ export default function NewUser(props) {
     const { register, handleSubmit } = useForm();
     // const onSubmit = data => console.log(data);
 
-    const onSubmit = data => {
+    const onSubmit = formUser => {
         // console.log(data);
-        setUserForm(data)
-        console.log(userForm);
+        props.submitUser(formUser)
         props.handleForm()
     }
     console.log(userForm);

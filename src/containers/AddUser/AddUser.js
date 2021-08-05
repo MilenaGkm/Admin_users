@@ -7,7 +7,7 @@ import NewUser from "../NewUser/NewUser"
 
 
 
-export default function NewUserBtn() {
+export default function NewUserBtn(props) {
     const [isOpen, setIsOpen] = useState(false)
 
     const handleOnClick = () => {
@@ -27,7 +27,7 @@ export default function NewUserBtn() {
             </Grid>
             {isOpen ? 
             <div className="form">
-                <NewUser handleForm={handleOnClick}/>
+                <NewUser submitUser={props.submitUser} handleForm={handleOnClick}/>
             </div>: null}
         </div>
     );

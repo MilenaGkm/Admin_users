@@ -13,7 +13,7 @@ function App() {
             <Header />
             <Users />
             <Modals />  
-            <NewUserBtn />          
+            {/* <NewUserBtn />           */}
         </Fragment>
     )
 }
