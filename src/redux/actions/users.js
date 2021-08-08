@@ -6,3 +6,10 @@ export function getUsers(users) {
         payload: users,
     }
 }
+
+export function addToDbUser(formUser) {
+    return {
+        type: type.ADD_USER_REQUESTED,
+        payload: formUser,
+    }
+}

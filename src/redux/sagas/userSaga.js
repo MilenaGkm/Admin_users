@@ -1,5 +1,5 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
-import { getApi } from '../../services/apiServices';
+import { getApi, postApi } from '../../services/apiServices';
 
 function* fetchUsers(action) {
    try {
@@ -10,8 +10,18 @@ function* fetchUsers(action) {
    }
 }
 
+function* addUser(action) {
+   try {
+      yield call(postApi, action.payload);
+      yield fetchUsers();
+   } catch (e) {
+      yield put({type: 'ADD_USER_FAILED', message: e.message});
+   }
+}
+
 function* userSaga() {
    yield takeEvery('GET_USERS_REQUESTED', fetchUsers);
+   yield takeEvery('ADD_USER_REQUESTED', addUser);
 }
 
 export default userSaga;

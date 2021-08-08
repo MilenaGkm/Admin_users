@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from "react-redux";
-import { getUsers } from '../../redux/actions/users';
+import { getUsers, addToDbUser } from '../../redux/actions/users';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -9,6 +9,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import NewUserBtn from "../AddUser/AddUser"
+
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -34,9 +36,12 @@ const useStyles = makeStyles({
     },
 });
 
-const Users = ({ apiUsers, isLoading, error, fetchUsers }) => {
+const Users = ({ apiUsers, isLoading, error, fetchUsers, addUser }) => {
     const classes = useStyles();
 
+    const handleSubmitUser = formUser => {
+        addUser(formUser)
+    }
 
     useEffect(() => {
         fetchUsers()
@@ -68,6 +73,7 @@ const Users = ({ apiUsers, isLoading, error, fetchUsers }) => {
                 </Table>
             </TableContainer>
             }
+            <NewUserBtn submitUser={handleSubmitUser}/>
         </div>
     )
 }
@@ -80,6 +86,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     fetchUsers: () => dispatch(getUsers()),
+    addUser: (formUser) => dispatch(addToDbUser(formUser)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Users);
