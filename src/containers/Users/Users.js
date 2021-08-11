@@ -73,7 +73,7 @@ const Users = ({ apiUsers, isLoading, error, fetchUsers, addUser }) => {
                 </Table>
             </TableContainer>
             }
-            <NewUserBtn submitUser={handleSubmitUser}/>
+            <NewUserBtn submitUser={handleSubmitUser} />
         </div>
     )
 }

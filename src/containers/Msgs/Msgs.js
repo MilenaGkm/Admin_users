@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { connect } from "react-redux";
 import { getMsgs, addToDbMsg } from '../../redux/actions/msgs';
+import { getUsers } from '../../redux/actions/users';
+import NewMsg from "../NewMsg/NewMsg"
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Collapse from '@material-ui/core/Collapse';
@@ -25,7 +27,7 @@ const useRowStyles = makeStyles({
 });
 
 
-const Msgs = ({ apiMsgs, isLoading, error, fetchMsgs, addMsg }) => {
+const Msgs = ({ apiMsgs, apiUsers, isLoading, error, fetchMsgs, fetchUsers, addMsg }) => {
     // const classes = useStyles();
     const [isOpen, setIsOpen] = React.useState([]);
     const classes = useRowStyles();
@@ -37,6 +39,7 @@ const Msgs = ({ apiMsgs, isLoading, error, fetchMsgs, addMsg }) => {
     }
 
     const handleSubmitMsg = formMsg => {
+        formMsg.reciever_ids = formMsg.reciever_ids.map(user => user._id)
         addMsg(formMsg)
     }
 
@@ -47,9 +50,9 @@ const Msgs = ({ apiMsgs, isLoading, error, fetchMsgs, addMsg }) => {
     useEffect(() => {
         let newIsOpen = []
         for (let i = 0; i < apiMsgs.length; i++) {
-             newIsOpen.push(false)
-            }
-            setIsOpen(newIsOpen)
+            newIsOpen.push(false)
+        }
+        setIsOpen(newIsOpen)
     }, [apiMsgs])
 
     return (
@@ -69,35 +72,36 @@ const Msgs = ({ apiMsgs, isLoading, error, fetchMsgs, addMsg }) => {
                                 <TableCell>Date</TableCell>
                             </TableRow>
                         </TableHead>
-                            {apiMsgs.map((msg, i) => (
+                        {apiMsgs.map((msg, i) => (
                             <TableBody key={i}>
                                 <TableRow className={classes.root}>
-                                <TableCell>
-                                    <IconButton aria-label="expand row" size="small" onClick={() => handleOnClick(i)}>
-                                        {isOpen[i] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                                    </IconButton>
-                                </TableCell>
-                                <TableCell component="th" scope="row">{msg.sender_id.username}</TableCell>
-                                <TableCell component="th" scope="row">{msg.reciever_id.username}</TableCell>
-                                <TableCell component="th" scope="row">{msg.subject}</TableCell>
-                                <TableCell component="th" scope="row">{msg.date}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                                    <Collapse in={isOpen[i]} timeout="auto" unmountOnExit>
-                                        <Box margin={1}>
-                                            <Typography  gutterBottom component="div">
-                                            {msg.body}
-                                            </Typography>
-                                        </Box>
-                                    </Collapse>
-                                </TableCell>
-                            </TableRow>
-                        </TableBody>
-                                ))}
+                                    <TableCell>
+                                        <IconButton aria-label="expand row" size="small" onClick={() => handleOnClick(i)}>
+                                            {isOpen[i] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                                        </IconButton>
+                                    </TableCell>
+                                    <TableCell component="th" scope="row">{msg.sender_id.username}</TableCell>
+                                    <TableCell component="th" scope="row">{msg.reciever_id.username}</TableCell>
+                                    <TableCell component="th" scope="row">{msg.subject}</TableCell>
+                                    <TableCell component="th" scope="row">{msg.date}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                                        <Collapse in={isOpen[i]} timeout="auto" unmountOnExit>
+                                            <Box margin={1}>
+                                                <Typography gutterBottom component="div">
+                                                    {msg.body}
+                                                </Typography>
+                                            </Box>
+                                        </Collapse>
+                                    </TableCell>
+                                </TableRow>
+                            </TableBody>
+                        ))}
                     </Table>
                 </TableContainer>
             }
+            <NewMsg  users={apiUsers} msgs={apiMsgs} submitMsg={handleSubmitMsg}/>
         </div>
     )
 }
@@ -106,7 +110,10 @@ const Msgs = ({ apiMsgs, isLoading, error, fetchMsgs, addMsg }) => {
 const mapStateToProps = (state) => ({
     apiMsgs: state.msgs.msgs,
     isLoading: state.msgs.loading,
-    error: state.msgs.error
+    error: state.msgs.error,
+    apiUsers: state.users.users,
+    isLoading: state.users.loading,
+    error: state.users.error
 })
 
 const mapDispatchToProps = (dispatch) => ({
