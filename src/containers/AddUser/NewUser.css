@@ -5,7 +5,7 @@
       sans-serif;
   } */
   
-  form {
+  .newUserForm {
     max-width: 500px;
     margin: 0 auto;
     background: #494f75;
@@ -22,7 +22,7 @@
         width: 100%;
     }
     
-    input {
+    .userInput {
         display: block;
         box-sizing: border-box;
     width: 100%;
@@ -33,7 +33,7 @@
     font-size: 14px;
   }
   
-  label {
+  .userLabel {
     line-height: 2;
     text-align: left;
     display: block;

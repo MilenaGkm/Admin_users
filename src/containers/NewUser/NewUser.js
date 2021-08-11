@@ -16,15 +16,15 @@ export default function NewUser(props) {
 
     return (
         <div className="lol">
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <label htmlFor="username"> Username:</label>
-                <input id="username" {...register("username")} />
-                <label htmlFor="password"> Password:</label>
-                <input id="password" {...register("password")} />
-                <label htmlFor="email"> Email:</label>
-                <input id="email" {...register("email")} />
-                <label htmlFor="phoneNumber"> Phone Number:</label>
-                <input id="phoneNumber" {...register("phoneNumber")} />
+            <form className="newUserForm" onSubmit={handleSubmit(onSubmit)}>
+                <label className="userLabel" htmlFor="username"> Username:</label>
+                <input className="userInput" id="username" {...register("username")} />
+                <label className="userLabel" htmlFor="password"> Password:</label>
+                <input className="userInput" id="password" {...register("password")} />
+                <label className="userLabel" htmlFor="email"> Email:</label>
+                <input className="userInput" id="email" {...register("email")} />
+                <label className="userLabel" htmlFor="phoneNumber"> Phone Number:</label>
+                <input className="userInput" id="phoneNumber" {...register("phoneNumber")} />
                 <input type="submit" />
             </form>
         </div>
