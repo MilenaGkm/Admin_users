@@ -1,9 +1,9 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
-import { getApi, postApi } from '../../services/apiServices';
+import { getUsersApi, postUsersApi } from '../../services/apiServices';
 
 function* fetchUsers(action) {
    try {
-      const users = yield call(getApi);
+      const users = yield call(getUsersApi);
       yield put({type: 'GET_USERS_SUCCESS', users: users});
    } catch (e) {
       yield put({type: 'GET_USERS_FAILED', message: e.message});
@@ -12,7 +12,7 @@ function* fetchUsers(action) {
 
 function* addUser(action) {
    try {
-      yield call(postApi, action.payload);
+      yield call(postUsersApi, action.payload);
       yield fetchUsers();
    } catch (e) {
       yield put({type: 'ADD_USER_FAILED', message: e.message});
