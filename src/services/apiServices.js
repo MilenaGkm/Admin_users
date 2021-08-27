@@ -44,7 +44,18 @@ export function postMsgsApi(msgToAdd) {
     };
     return fetch(msgsApi, requestOptions)  .catch((error) => {throw error})
     
+    
+}
 
+export function deleteMsgApi(msgToDelete) {
+    return fetch(`${msgsApi}/${msgToDelete}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+
+        }
+    }).then(response => response.json())
+        .catch((error) => { throw error })
 }
 
 export function getScheduleApi() {
