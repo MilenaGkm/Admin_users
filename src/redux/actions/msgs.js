@@ -13,3 +13,10 @@ export function addToDbMsg(formMsg) {
         payload: formMsg,
     }
 }
+
+export function deleteMsgFromDb(msg) {
+    return {
+        type: type.DELETE_MSG_REQUESTED,
+        payload: msg,
+    }
+}

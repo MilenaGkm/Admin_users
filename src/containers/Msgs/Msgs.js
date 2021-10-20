@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
 import { connect } from "react-redux";
-import { getMsgs, addToDbMsg } from '../../redux/actions/msgs';
+import { getMsgs, addToDbMsg, deleteMsgFromDb } from '../../redux/actions/msgs';
 import { getUsers } from '../../redux/actions/users';
 import NewMsg from "../NewMsg/NewMsg"
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -27,7 +28,7 @@ const useRowStyles = makeStyles({
 });
 
 
-const Msgs = ({ apiMsgs, apiUsers, isLoading, error, fetchMsgs, fetchUsers, addMsg }) => {
+const Msgs = ({ apiMsgs, apiUsers, isLoading, error, fetchMsgs, fetchUsers, addMsg, deleteMsg }) => {
     // const classes = useStyles();
     const [isOpen, setIsOpen] = React.useState([]);
     const classes = useRowStyles();
@@ -36,6 +37,10 @@ const Msgs = ({ apiMsgs, apiUsers, isLoading, error, fetchMsgs, fetchUsers, addM
         let handleIsOpen = [...isOpen]
         handleIsOpen[i] = !handleIsOpen[i]
         setIsOpen(handleIsOpen)
+    }
+    
+    const handleDeleteMsg = (msg) => {
+        deleteMsg(msg)
     }
 
     const handleSubmitMsg = formMsg => {
@@ -57,6 +62,7 @@ const Msgs = ({ apiMsgs, apiUsers, isLoading, error, fetchMsgs, fetchUsers, addM
 
     return (
         <div>
+            <NewMsg users={apiUsers} msgs={apiMsgs} submitMsg={handleSubmitMsg} />
             {isLoading && <p>Loading...</p>}
             {apiMsgs.length === 0 && !isLoading && <p>No msgs available!</p>}
             {error && !isLoading && <p>{error}</p>}
@@ -70,6 +76,7 @@ const Msgs = ({ apiMsgs, apiUsers, isLoading, error, fetchMsgs, fetchUsers, addM
                                 <TableCell>To</TableCell>
                                 <TableCell>Subject</TableCell>
                                 <TableCell>Date</TableCell>
+                                <TableCell />
                             </TableRow>
                         </TableHead>
                         {apiMsgs.map((msg, i) => (
@@ -84,6 +91,11 @@ const Msgs = ({ apiMsgs, apiUsers, isLoading, error, fetchMsgs, fetchUsers, addM
                                     <TableCell component="th" scope="row">{msg.reciever_id.username}</TableCell>
                                     <TableCell component="th" scope="row">{msg.subject}</TableCell>
                                     <TableCell component="th" scope="row">{msg.date}</TableCell>
+                                    <TableCell>
+                                        <IconButton aria-label="delete" size="small" onClick={() => handleDeleteMsg(msg._id)}>
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -101,7 +113,6 @@ const Msgs = ({ apiMsgs, apiUsers, isLoading, error, fetchMsgs, fetchUsers, addM
                     </Table>
                 </TableContainer>
             }
-            <NewMsg  users={apiUsers} msgs={apiMsgs} submitMsg={handleSubmitMsg}/>
         </div>
     )
 }
@@ -119,6 +130,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     fetchMsgs: () => dispatch(getMsgs()),
     addMsg: (formMsg) => dispatch(addToDbMsg(formMsg)),
+    deleteMsg: (msg) => dispatch(deleteMsgFromDb(msg)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Msgs);
